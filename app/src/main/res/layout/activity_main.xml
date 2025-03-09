@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@drawable/background_gradient">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_text"
+        android:textSize="28sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_marginBottom="48dp"
+        android:fontFamily="sans-serif-light"/>
+
+    <Button
+        android:id="@+id/start_browsing_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_browsing_button_text"
+        android:textColor="#FFFFFF"
+        android:paddingStart="48dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="48dp"
+        android:paddingBottom="16dp"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button"
+        android:elevation="3dp"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout_button_text"
+        android:textColor="#FFFFFF"
+        android:paddingStart="48dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="48dp"
+        android:paddingBottom="16dp"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button"
+        android:elevation="3dp"/>
+
+</LinearLayout>

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Espresso",
+    "category": "coffee",
+    "description": "A strong black coffee",
+    "price": 2.50,
+    "image": "espresso.jpg",
+    "dietary": ["vegetarian", "gluten-free"]
+  },
+  {
+    "name": "Croissant",
+    "category": "pastry",
+    "description": "A buttery, flaky pastry",
+    "price": 3.00,
+    "image": "croissant.jpg",
+    "dietary": ["vegetarian"]
+  },
+  {
+    "name": "Green Tea",
+    "category": "tea",
+    "description": "A light, refreshing tea",
+    "price": 2.00,
+    "image": "green_tea.jpg",
+    "dietary": ["vegetarian", "gluten-free"]
+  }
+]

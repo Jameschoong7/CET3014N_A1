@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#8BC34A</color>
+
+    <color name="background_start_color">#E0F7FA</color>
+    <color name="background_end_color">#F0F4C3</color>
+    <color name="background_color">#F8F8F8</color>
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#777777</color>
+    <color name="bottom_navigation_icon_color">#777777</color> <color name="bottom_navigation_text_color">#555555</color> <color name="bottom_navigation_item_selector">
+    <selector>
+        <item android:color="@color/colorPrimary" android:state_checked="true"/> <item android:color="@color/bottom_navigation_icon_color"/>
+    </selector>
+</color>
+
+</resources>
