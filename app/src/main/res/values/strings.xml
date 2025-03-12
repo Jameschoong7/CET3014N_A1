@@ -21,7 +21,9 @@
     <string name="email_or_phone_hint">Email or Phone Number</string>
     <string name="reset_password_button_text">Reset Password</string>
     <string name="menu_filters_title">Filter Menu by:</string>
-    <string name="start_browsing_button_text">Start Browsing</string> <string name="category_item_all">All</string>
+    <string name="start_browsing_button_text">Start</string>
+    <string name="category_item_all">All</string>
+    <string name="menu_title">Our Menu</string>
     <string name="category_item_coffee">Coffee</string>
     <string name="category_item_tea">Tea</string>
     <string name="category_item_pastries">Pastries</string>
@@ -41,6 +43,7 @@
     <string name="voucher_code">Voucher Code</string>
     <string name="apply_voucher">Apply Voucher</string>
     <string name="final_price">Final Price: $0.00</string>
+
     <string name="proceed_to_payment">Proceed to Payment</string>
     <string name="item_name">Item Name</string>
     <string name="item_details">Details: Milk, Sugar</string>
@@ -49,4 +52,11 @@
     <string name="milk_type">Milk Type:</string>
     <string name="sugar_level">Sugar Level:</string>
     <string name="add_to_cart">Add to Cart</string>
+    <string name="clear_cart">Clear Cart</string>
+
+
+    <string name="action_track_order">Track Order</string>
+    <string name="action_accounts">Accounts</string>
+    <string name="action_about">About</string>
+
 </resources>

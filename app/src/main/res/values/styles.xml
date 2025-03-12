@@ -11,5 +11,10 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
     </style>
-
+    <style name="PageTitleTextStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@color/titleTextColor</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

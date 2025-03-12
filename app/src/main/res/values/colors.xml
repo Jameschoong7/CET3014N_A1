@@ -16,5 +16,6 @@
         <item android:color="@color/colorPrimary" android:state_checked="true"/> <item android:color="@color/bottom_navigation_icon_color"/>
     </selector>
 </color>
+    <color name="titleTextColor">#222222</color>
 
 </resources>

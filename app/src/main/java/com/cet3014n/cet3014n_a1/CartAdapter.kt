@@ -22,9 +22,9 @@ class CartAdapter(context: Context, private val cartItems: List<CartItem>) :
         val itemPriceTextView: TextView = view.findViewById(R.id.cartItemPrice)
 
         itemNameTextView.text = cartItem.menuItem.name
-        val details = "Milk: ${cartItem.milkOption}, Sugar: ${cartItem.sugarLevel}" // Corrected details string
-        itemDetailsTextView.text = details // Corrected assignment
-        itemPriceTextView.text = "$${String.format("%.2f", cartItem.menuItem.price)}" // Corrected assignment and price formatting
+        val details = "Milk: ${cartItem.milkOption}, Sugar: ${cartItem.sugarLevel}"
+        itemDetailsTextView.text = details
+        itemPriceTextView.text = "$${String.format("%.2f", cartItem.menuItem.price)}"
 
         return view
     }

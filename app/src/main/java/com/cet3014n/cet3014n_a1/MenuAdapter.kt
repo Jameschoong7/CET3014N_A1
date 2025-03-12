@@ -3,6 +3,7 @@ package com.cet3014n.cet3014n_a1
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class MenuAdapter(private val context: Context, private val items: List<MenuItem
         itemImage.setImageResource(if (imageResId != 0) imageResId else R.drawable.placeholder)
 
         addToCartButton.setOnClickListener {
+
             // Start CustomizeItemActivity when "Add to Cart" is clicked
             val intent = Intent(context, CustomizeItemActivity::class.java)
             intent.putExtra("menuItem", menuItem) // Pass the MenuItem to CustomizeItemActivity

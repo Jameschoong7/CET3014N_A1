@@ -3,171 +3,141 @@ package com.cet3014n.cet3014n_a1
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-
+import android.util.Log
 import android.view.View
-import android.widget.ListView
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
-class MenuActivity : AppCompatActivity() {
+class MenuActivity : AppCompatActivity(), CategoryAdapter.OnCategoryClickListener {
 
     private lateinit var menuItems: List<MenuItem>
-    private lateinit var filteredItems: List<MenuItem>
-    private lateinit var menuListView: ListView
+    private lateinit var filteredMenuItems: List<MenuItem> // Use filteredMenuItems for clarity
+    private lateinit var categories: List<Category>
+    private lateinit var categoryRecyclerView: RecyclerView
+    private lateinit var menuRecyclerView: RecyclerView
+    private lateinit var categoryAdapter: CategoryAdapter // Category Adapter
+    private lateinit var menuAdapter: MenuRecyclerAdapter // Menu Item Adapter
     private lateinit var bottomNavigationView: BottomNavigationView
-    private val cartItemsList = mutableListOf<CartItem>() // **Shopping Cart List**
+    private val cartItemsList = mutableListOf<CartItem>()
 
     companion object {
-        const val REQUEST_CUSTOMIZE_ITEM = 1 // Request code for startActivityForResult
+        const val REQUEST_CUSTOMIZE_ITEM = 1
+        private const val MENU_JSON_FILE = "menu.json"
+        private const val TAG = "MenuActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_activity)
 
-        menuItems = loadMenuItems()
-        filteredItems = menuItems
-
-        menuListView = findViewById(R.id.menuListView)
+        categoryRecyclerView = findViewById(R.id.categoryRecyclerView) // Initialize category RecyclerView
+        menuRecyclerView = findViewById(R.id.menuRecyclerView) // Initialize menu RecyclerView
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
 
-        // Set up BottomNavigationView listener
-        bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.action_category -> {
-                    showCategoryPopupMenu(findViewById(R.id.action_category)) // Show PopupMenu
-                    true
-                }
+        menuItems = loadMenuItems()
+        categories = extractCategories(menuItems) // Extract categories from menu items
+        filteredMenuItems = menuItems // Initially show all menu items
 
-                R.id.action_cart -> {
-                    // Navigate to CartActivity when "Cart" is clicked
-                    val intent = Intent(this, CartActivity::class.java)
-                    intent.putParcelableArrayListExtra(
-                        "cartItems",
-                        ArrayList(cartItemsList)
-                    ) // Pass current cart items to CartActivity
-                    startActivity(intent)
-                    true
-                }
+        setupCategoryRecyclerView() // Setup category RecyclerView
+        setupMenuRecyclerView() // Setup menu RecyclerView (using filteredMenuItems)
 
-                R.id.action_settings -> {
-                    // Handle "Settings" menu item click (as before)
-                    // ... Your settings action ...
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        // Initial display - show all menu items
-        updateMenuListView()
+        BottomNavigationUtils.setupBottomNavigation(this, bottomNavigationView)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        //onActivityResult - CartItem process is the same as before
         if (requestCode == REQUEST_CUSTOMIZE_ITEM) {
             if (resultCode == Activity.RESULT_OK) {
                 val cartItem = data?.getParcelableExtra<CartItem>("cartItem")
                 if (cartItem != null) {
-                    cartItemsList.add(cartItem) // **Add CartItem to the cart list**
+                    cartItemsList.add(cartItem)
                     Toast.makeText(
                         this,
                         "${cartItem.menuItem.name} added to cart!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    // Optionally update cart badge or UI here to reflect cart changes
+                    Log.d(
+                        TAG,
+                        "Added to cart: ${cartItem.menuItem.name}, Cart size: ${cartItemsList.size}"
+                    )
+                } else {
+                    Log.e(TAG, "Error: CartItem data is null in onActivityResult")
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                // User canceled customization, do nothing or handle as needed
+                Log.d(TAG, "Customize item cancelled")
             }
         }
     }
 
-    private fun showCategoryPopupMenu(anchorView: View) {
-        val popupMenu = PopupMenu(this, anchorView)
-        popupMenu.menuInflater.inflate(
-            R.menu.popup_menu_category_filter,
-            popupMenu.menu
-        ) // Inflate popup menu
-
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            android.util.Log.d("MenuActivity", "PopupMenu Item Clicked: ${menuItem.itemId}")
-            when (menuItem.itemId) {
-                R.id.category_all -> {
-                    filterMenuItems("All")
-                    true
-                }
-
-                R.id.category_coffee -> {
-                    filterMenuItems("Coffee")
-                    true
-                }
-
-                R.id.category_tea -> {
-                    filterMenuItems("Tea")
-                    true
-                }
-
-                R.id.category_pastries -> {
-                    filterMenuItems("Pastry")
-                    true
-                }
-
-                else -> false
-            }
-        }
-        popupMenu.show() // Show the popup menu
+    private fun setupCategoryRecyclerView() {
+        categoryAdapter = CategoryAdapter(categories, this) // Initialize CategoryAdapter with categories and listener
+        categoryRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) // Vertical LinearLayoutManager for categories
+        categoryRecyclerView.adapter = categoryAdapter // Set CategoryAdapter to category RecyclerView
     }
 
-
-    private fun filterMenuItems(selectedCategory: String) {
-        android.util.Log.d(
-            "MenuActivity",
-            "Filtering for category: $selectedCategory"
-        ) // Log selected category
-        filteredItems = if (selectedCategory == "All") {
-            menuItems
-        } else {
-            menuItems.filter { item ->
-                item.category == selectedCategory.lowercase()
-            }
-        }
-        android.util.Log.d(
-            "MenuActivity",
-            "Filtered items count: ${filteredItems.size}"
-        ) // Log filtered items count
-        updateMenuListView()
-    }
-
-
-    private fun updateMenuListView() {
-        val adapter = MenuAdapter(this, filteredItems)
-        menuListView.adapter = adapter
+    private fun setupMenuRecyclerView() {
+        menuAdapter = MenuRecyclerAdapter(this, filteredMenuItems) // Initialize MenuRecyclerAdapter with filtered items
+        menuRecyclerView.layoutManager =
+            GridLayoutManager(this, 2) // GridLayoutManager with 2 columns for menu items
+        menuRecyclerView.adapter = menuAdapter // Set MenuRecyclerAdapter to menu RecyclerView
     }
 
     private fun loadMenuItems(): List<MenuItem> {
-        try {
-            val inputStream = assets.open("menu.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            android.util.Log.d("MenuActivity", "JSON String loaded: $jsonString")
-            val gson = Gson()
+        return try {
+            val inputStream = assets.open(MENU_JSON_FILE)
+            val reader = InputStreamReader(inputStream)
             val menuType = object : TypeToken<List<MenuItem>>() {}.type
-            val loadedMenuItems: List<com.cet3014n.cet3014n_a1.MenuItem> =
-                gson.fromJson(jsonString, menuType)
-            android.util.Log.d("MenuActivity", "Menu items loaded: ${loadedMenuItems.size} items")
-            return gson.fromJson(jsonString, menuType)
+            Gson().fromJson(reader, menuType) ?: emptyList()
         } catch (e: Exception) {
-            android.util.Log.e("MenuActivity", "Error loading menu items:", e)
-            e.printStackTrace()
-            return emptyList()
+            Log.e(TAG, "Error loading menu items: ${e.message}", e)
+            emptyList()
         }
     }
+
+    private fun extractCategories(menuItems: List<MenuItem>): List<Category> {
+        val categorySet = mutableSetOf<String>() // Use a Set to store unique categories
+        menuItems.forEach { menuItem ->
+            menuItem.category?.let { categorySet.add(it) } // Add category if not null
+        }
+        val categoryList = categorySet.toList()
+        return listOf(Category("All")) + categoryList.map { Category(it) } // Convert Set to List of Category objects, Add "All Categories"
+    }
+
+
+    fun getImageResourceId(imageName: String): Int {
+        Log.d("ImageLoading", "Attempting to load image: $imageName")
+        val imageNameWithoutExtension = imageName.substringBeforeLast(".")
+        Log.d("ImageLoading", "Image name without extension: $imageNameWithoutExtension")
+        val resId = resources.getIdentifier(imageNameWithoutExtension, "drawable", packageName)
+        Log.d("ImageLoading", "Resource ID for $imageNameWithoutExtension: $resId")
+        return if (resId == 0) {
+            Log.d("ImageLoading", "Resource NOT FOUND for $imageNameWithoutExtension. Returning placeholder: R.drawable.placeholder")
+            R.drawable.placeholder
+        } else {
+            Log.d("ImageLoading", "Resource FOUND for $imageNameWithoutExtension. Returning resId: $resId")
+            resId
+        }
+    }
+
+    override fun onCategoryClick(category: Category) {
+        filterMenuItemsByCategory(category.name) // Filter menu items when category is clicked
+    }
+
+    private fun filterMenuItemsByCategory(selectedCategoryName: String) {
+        filteredMenuItems = if (selectedCategoryName == "All Categories") {
+            menuItems // Show all items if "All Categories" is selected
+        } else {
+            menuItems.filter { it.category == selectedCategoryName } // Filter by selected category
+        }
+        setupMenuRecyclerView() // Re-setup menu RecyclerView to update the list
+    }
 }
-
-
