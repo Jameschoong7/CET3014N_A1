@@ -32,7 +32,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var clearCartButton:Button
     private lateinit var sharedPreferences: SharedPreferences
     private val DELIVERY_DETAILS_PREFS_NAME = "DeliveryDetailsPrefs"
-
+    private val ORDER_PREFS_NAME = "OrderPrefs"
 
     private fun setupPaymentButtonListener() { // Extract button listener into a function for clarity
         paymentButton.setOnClickListener {
@@ -77,8 +77,9 @@ class CartActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(DELIVERY_DETAILS_PREFS_NAME, MODE_PRIVATE)
 
         // Get cart items from intent
-        cartItems = intent.getParcelableArrayListExtra<CartItem>("cartItems") ?: ArrayList()
+        //cartItems = intent.getParcelableArrayListExtra<CartItem>("cartItems") ?: ArrayList()
 
+        cartItems = CartManager.cartItems as ArrayList<CartItem>
         Log.d("CartActivity", "Cart Items received in CartActivity, size: ${cartItems.size}")
         for (item in cartItems) {
             Log.d("CartActivity", "  Item: ${item.menuItem.name}, Milk: ${item.milkOption}, Sugar: ${item.sugarLevel}")
@@ -152,6 +153,15 @@ class CartActivity : AppCompatActivity() {
         orderTotalPriceTextView.text = "Total Price: $${String.format("%.2f", totalPrice)}"
         orderTaxTextView.text = "Tax (5%): $${String.format("%.2f", tax)}"
         orderFinalPriceTextView.text = "Final Price: $${String.format("%.2f", finalPrice)}"
+
+        // **ENABLE/DISABLE PAYMENT BUTTON BASED ON CART ITEMS**
+        if (CartManager.getCartTotal() == 0.0) { // Check if cart is empty using CartManager
+            paymentButton.isEnabled = false // Disable the payment button
+            paymentButton.alpha = 0.5f // Optionally visually grey out the button (adjust alpha as needed)
+        } else {
+            paymentButton.isEnabled = true // Enable the payment button
+            paymentButton.alpha = 1.0f // Reset alpha to fully visible
+        }
     }
 
     private fun applyVoucher() {
@@ -175,6 +185,19 @@ class CartActivity : AppCompatActivity() {
 
         // Simulate generating an order ID
         val orderId = UUID.randomUUID().toString().substring(0, 8).toUpperCase()
+        val initialOrderStatus = "Preparing Order" // Initial order status
+        sharedPreferences = getSharedPreferences(ORDER_PREFS_NAME, MODE_PRIVATE)
+        // **Logging BEFORE saving to SharedPreferences**
+        Log.d("CartActivity", "Saving orderId: $orderId to SharedPreferences")
+        Log.d("CartActivity", "Saving orderStatus: $initialOrderStatus to SharedPreferences")
+        // **Save orderId and orderStatus to SharedPreferences:**
+        val editor = sharedPreferences.edit() // Use the same sharedPreferences instance as for delivery details
+        editor.putString("orderId", orderId)
+        editor.putString("orderStatus", initialOrderStatus)
+        editor.apply() // Apply changes
+
+        // **Logging AFTER saving to SharedPreferences**
+        Log.d("CartActivity", "Order ID and Status SAVED to SharedPreferences")
 
         // In a real app, integrate with a payment gateway here
         // For simulation, just show a confirmation message

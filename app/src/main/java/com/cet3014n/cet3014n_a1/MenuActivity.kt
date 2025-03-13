@@ -58,7 +58,8 @@ class MenuActivity : AppCompatActivity(), CategoryAdapter.OnCategoryClickListene
             if (resultCode == Activity.RESULT_OK) {
                 val cartItem = data?.getParcelableExtra<CartItem>("cartItem")
                 if (cartItem != null) {
-                    cartItemsList.add(cartItem)
+                    CartManager.addToCart(cartItem)
+                    //cartItemsList.add(cartItem)
                     Toast.makeText(
                         this,
                         "${cartItem.menuItem.name} added to cart!",
@@ -133,7 +134,7 @@ class MenuActivity : AppCompatActivity(), CategoryAdapter.OnCategoryClickListene
     }
 
     private fun filterMenuItemsByCategory(selectedCategoryName: String) {
-        filteredMenuItems = if (selectedCategoryName == "All Categories") {
+        filteredMenuItems = if (selectedCategoryName == "All") {
             menuItems // Show all items if "All Categories" is selected
         } else {
             menuItems.filter { it.category == selectedCategoryName } // Filter by selected category
