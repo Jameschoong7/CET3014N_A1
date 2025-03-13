@@ -41,7 +41,8 @@ object BottomNavigationUtils {
                                 true
                             }
                             R.id.action_accounts -> {
-                                Toast.makeText(activity, "Accounts Clicked", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(activity, AccountsActivity::class.java)
+                                activity.startActivity(intent)
                                 true
                             }
                             R.id.action_about -> {

@@ -2,6 +2,7 @@ package com.cet3014n.cet3014n_a1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -30,7 +31,7 @@ class CustomizeItemActivity : AppCompatActivity() {
         // Load item details
         itemNameText.text = item.name
         // Load image (using your image loading method - placeholder for now)
-        // itemImage.setImageResource(getImageResourceId(item.image)) // You'll need to implement getImageResourceId
+         itemImage.setImageResource(getImageResourceId(item.image)) // You'll need to implement getImageResourceId
 
         // Populate customization Spinners (example options)
         val milkOptions = arrayOf("Whole Milk", "Skim Milk", "Almond Milk", "Soy Milk")
@@ -59,4 +60,20 @@ class CustomizeItemActivity : AppCompatActivity() {
             }
         }
     }
+    fun getImageResourceId(imageName: String?): Int {
+        Log.d("ImageLoading", "Attempting to load image: $imageName")
+        val imageNameWithoutExtension = imageName?.substringBeforeLast(".")
+        Log.d("ImageLoading", "Image name without extension: $imageNameWithoutExtension")
+        val resId = resources.getIdentifier(imageNameWithoutExtension, "drawable", packageName)
+        Log.d("ImageLoading", "Resource ID for $imageNameWithoutExtension: $resId")
+        return if (resId == 0) {
+            Log.d("ImageLoading", "Resource NOT FOUND for $imageNameWithoutExtension. Returning placeholder: R.drawable.placeholder")
+            R.drawable.placeholder
+        } else {
+            Log.d("ImageLoading", "Resource FOUND for $imageNameWithoutExtension. Returning resId: $resId")
+            resId
+        }
+    }
 }
+
+

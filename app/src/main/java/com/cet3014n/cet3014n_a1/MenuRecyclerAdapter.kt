@@ -47,7 +47,7 @@ class MenuRecyclerAdapter(
           //  menuItem.image.removeSuffix(".jpg"), "drawable", context.packageName
         //)
 
-        val imageResId = (context as? MenuActivity)?.getImageResourceId(imageName) ?: R.drawable.placeholder // **Original Logic - Restore this line**
+        val imageResId = (context as? MenuActivity)?.getImageResourceId(imageName) ?: R.drawable.placeholder
         Log.d("ImageLoadingAdapter", "Resource ID to set for ${menuItem.name}: $imageResId")
 
         Log.d("ImageLoadingAdapter", "Resource ID to set for ${menuItem.name}: $imageResId") // Log resId before setting

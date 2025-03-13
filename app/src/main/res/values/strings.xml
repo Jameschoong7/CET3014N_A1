@@ -65,4 +65,10 @@
     <string name="order_id_placeholder">Order ID: [Simulated]</string>
     <string name="order_status_preparing">Status: Preparing</string>
     <string name="finish_order_button">Finish Order</string>
+
+    <string name="account_settings">Account Settings</string>
+    <string name="user_profile">User Profile</string>
+    <string name="user_name_placeholder">Name: [User Name]</string>
+    <string name="user_email_placeholder">Email: [user@email.com]</string>
+    <string name="view_vouchers">View Vouchers</string>
 </resources>

@@ -1,0 +1,22 @@
+[
+  {
+    "code": "DISCOUNT10",
+    "description": "Get 10% off your entire order!",
+    "isActive": true
+  },
+  {
+    "code": "FREEDELIVERY",
+    "description": "Enjoy free delivery on orders over $20.",
+    "isActive": true
+  },
+  {
+    "code": "WELCOME5",
+    "description": "Welcome offer: $5 off your first purchase.",
+    "isActive": true
+  },
+  {
+    "code": "EXPIREDCODE",
+    "description": "This voucher has expired.",
+    "isActive": false
+  }
+]

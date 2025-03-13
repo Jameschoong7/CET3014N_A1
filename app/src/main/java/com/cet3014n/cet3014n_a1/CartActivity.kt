@@ -9,6 +9,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.IOException
 import java.util.UUID
 
 class CartActivity : AppCompatActivity() {
@@ -28,9 +31,10 @@ class CartActivity : AppCompatActivity() {
     private lateinit var paymentButton: Button
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var cartItems: ArrayList<CartItem> // To hold cart items passed from MenuActivity
-    private lateinit var cartAdapter: CartAdapter // You'll need to create CartAdapter
+    private lateinit var cartAdapter: CartAdapter
     private lateinit var clearCartButton:Button
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var voucherList: List<Voucher>
     private val DELIVERY_DETAILS_PREFS_NAME = "DeliveryDetailsPrefs"
     private val ORDER_PREFS_NAME = "OrderPrefs"
 
@@ -102,7 +106,7 @@ class CartActivity : AppCompatActivity() {
 
         // Calculate and display order summary
         updateOrderSummary()
-
+        voucherList = loadVouchersFromJson()
         applyVoucherButton.setOnClickListener {
             applyVoucher() // Implement voucher logic
         }
@@ -122,7 +126,18 @@ class CartActivity : AppCompatActivity() {
         // Set "Cart" item as selected initially in BottomNavigationView (if you want Cart to be highlighted when CartActivity starts)
        // bottomNavigationView.selectedItemId = R.id.action_cart
     }
-
+    private fun loadVouchersFromJson(): List<Voucher> {
+        return try {
+            val inputStream = assets.open("voucher.json")
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val gson = Gson()
+            val voucherType = object : TypeToken<List<Voucher>>() {}.type
+            gson.fromJson(jsonString, voucherType) ?: emptyList()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
     private fun loadDeliveryDetails() {
         if (sharedPreferences.contains("deliveryAddress")) {
             deliveryRadioButton.isChecked = true // Assume delivery if details are saved
@@ -166,14 +181,21 @@ class CartActivity : AppCompatActivity() {
 
     private fun applyVoucher() {
         val voucherCode = voucherEditText.text.toString()
-        // In a real app, you'd validate voucher code against a backend
-        if (voucherCode == "DISCOUNT10") {
+        if (voucherCode.isEmpty()) {
+            Toast.makeText(this, "Please enter a voucher code.", Toast.LENGTH_SHORT).show()
+            return // Exit if voucher code is empty
+        }
+
+        // **Find the voucher from voucherList**
+        val validVoucher = voucherList.find { it.code == voucherCode && it.isActive }
+
+        if (validVoucher != null) {
             var finalPrice = orderFinalPriceTextView.text.toString().removePrefix("Final Price: $").toDoubleOrNull() ?: 0.0
-            finalPrice *= 0.9 // 10% discount
+            finalPrice *= 0.90 // Apply 10% discount (assuming all vouchers are 10% for now - make dynamic later if needed)
             orderFinalPriceTextView.text = "Final Price: $${String.format("%.2f", finalPrice)}"
-            Toast.makeText(this, "Voucher applied!", Toast.LENGTH_SHORT).show()
-        } else if (voucherCode.isNotEmpty()) {
-            Toast.makeText(this, "Invalid voucher code.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Voucher '${validVoucher.code}' applied: ${validVoucher.description}", Toast.LENGTH_LONG).show() // Show voucher description
+        } else {
+            Toast.makeText(this, "Invalid or inactive voucher code.", Toast.LENGTH_SHORT).show()
         }
     }
 
