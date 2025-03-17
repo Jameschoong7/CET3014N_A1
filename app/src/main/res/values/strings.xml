@@ -54,6 +54,11 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="clear_cart">Clear Cart</string>
 
+    <string name="payment_options">Payment Options</string>
+    <string name="credit_debit_card">Credit/Debit Card</string>
+    <string name="mobile_wallet">Mobile Wallet</string>
+    <string name="other_payment_method">Other Method</string>
+
 
     <string name="action_track_order">Track Order</string>
     <string name="action_accounts">Accounts</string>
@@ -65,6 +70,7 @@
     <string name="order_id_placeholder">Order ID: [Simulated]</string>
     <string name="order_status_preparing">Status: Preparing</string>
     <string name="finish_order_button">Finish Order</string>
+    <string name="delivery_map">Delivery Map"</string>
 
     <string name="account_settings">Account Settings</string>
     <string name="user_profile">User Profile</string>

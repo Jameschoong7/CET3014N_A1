@@ -35,6 +35,10 @@ class CartActivity : AppCompatActivity() {
     private lateinit var clearCartButton:Button
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var voucherList: List<Voucher>
+    private lateinit var paymentMethodRadioGroup: RadioGroup // Added
+    private lateinit var creditDebitRadioButton: RadioButton // Added
+    private lateinit var mobileWalletRadioButton: RadioButton // Added
+    private lateinit var otherPaymentRadioButton: RadioButton // Added
     private val DELIVERY_DETAILS_PREFS_NAME = "DeliveryDetailsPrefs"
     private val ORDER_PREFS_NAME = "OrderPrefs"
 
@@ -75,8 +79,11 @@ class CartActivity : AppCompatActivity() {
         orderFinalPriceTextView = findViewById(R.id.orderFinalPriceTextView)
         paymentButton = findViewById(R.id.paymentButton)
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-
         clearCartButton=findViewById(R.id.clearCartButton)
+        paymentMethodRadioGroup = findViewById(R.id.paymentMethodRadioGroup) // Initialize
+        creditDebitRadioButton = findViewById(R.id.creditDebitRadioButton) // Initialize
+        mobileWalletRadioButton = findViewById(R.id.mobileWalletRadioButton) // Initialize
+        otherPaymentRadioButton = findViewById(R.id.otherPaymentRadioButton) // Initialize
 
         sharedPreferences = getSharedPreferences(DELIVERY_DETAILS_PREFS_NAME, MODE_PRIVATE)
 
@@ -124,7 +131,7 @@ class CartActivity : AppCompatActivity() {
         // Bottom Navigation setup (same as in MenuActivity, but handle Cart action here)
         BottomNavigationUtils.setupBottomNavigation(this, bottomNavigationView)
         // Set "Cart" item as selected initially in BottomNavigationView (if you want Cart to be highlighted when CartActivity starts)
-       // bottomNavigationView.selectedItemId = R.id.action_cart
+        // bottomNavigationView.selectedItemId = R.id.action_cart
     }
     private fun loadVouchersFromJson(): List<Voucher> {
         return try {
@@ -205,6 +212,20 @@ class CartActivity : AppCompatActivity() {
         val deliveryType = if (deliveryRadioButton.isChecked) "Delivery" else "Pickup"
         val finalAmount = orderFinalPriceTextView.text.toString()
 
+        // **Get selected payment method**
+        val selectedPaymentMethodId = paymentMethodRadioGroup.checkedRadioButtonId
+        val paymentMethod = when (selectedPaymentMethodId) {
+            R.id.creditDebitRadioButton -> "Credit/Debit Card"
+            R.id.mobileWalletRadioButton -> "Mobile Wallet"
+            R.id.otherPaymentRadioButton -> "Other Payment Method"
+            else -> "Not Selected" // Handle case where no option is selected
+        }
+        Log.d("CartActivity", "Selected Payment Method: $paymentMethod")
+        if (paymentMethod == "Not Selected") {
+            Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         // Simulate generating an order ID
         val orderId = UUID.randomUUID().toString().substring(0, 8).toUpperCase()
         val initialOrderStatus = "Preparing Order" // Initial order status
@@ -221,9 +242,9 @@ class CartActivity : AppCompatActivity() {
         // **Logging AFTER saving to SharedPreferences**
         Log.d("CartActivity", "Order ID and Status SAVED to SharedPreferences")
 
-        // In a real app, integrate with a payment gateway here
-        // For simulation, just show a confirmation message
-        val confirmationMessage = "Payment of $finalAmount processed for $deliveryType order. Order ID: $orderId. " +
+        // In a real app, integrate with a payment gateway here based on the selected paymentMethod
+        // For simulation, just show a confirmation message with the selected method
+        val confirmationMessage = "Payment of $finalAmount via $paymentMethod processed for $deliveryType order. Order ID: $orderId. " +
                 if (deliveryType == "Delivery") "Delivery to: ${deliveryAddressEditText.text}" else "Preparing, Ready for pickup."
         Toast.makeText(this, confirmationMessage, Toast.LENGTH_LONG).show()
 

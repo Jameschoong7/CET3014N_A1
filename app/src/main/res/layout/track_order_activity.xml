@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
+
     android:gravity="center_horizontal"
     android:background="@drawable/background_gradient">
 
     <TextView
         android:id="@+id/trackOrderTitleTextView"
+        style="@style/PageTitleTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="24dp"
         android:text="@string/track_order_title"
-        style="@style/PageTitleTextStyle"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/noOrderTextView"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    android:padding="24dp">
+    >
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -62,6 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:visibility="gone">
 
                 <EditText
@@ -98,6 +100,10 @@
                 android:maxHeight="300dp"
                 android:minHeight="150dp"
                 android:nestedScrollingEnabled="true"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="0dp"
                 tools:listitem="@layout/cart_item" />
 
             <LinearLayout
@@ -106,6 +112,41 @@
                 android:background="@drawable/rounded_listview_background"
                 android:orientation="vertical"
                 android:padding="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/payment_options"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/paymentMethodRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/creditDebitRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/credit_debit_card" />
+
+                    <RadioButton
+                        android:id="@+id/mobileWalletRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mobile_wallet" />
+
+                    <RadioButton
+                        android:id="@+id/otherPaymentRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/other_payment_method" />
+                </RadioGroup>
 
                 <TextView
                     android:id="@+id/orderTotalPriceTextView"
@@ -189,6 +230,7 @@
                     android:text="@string/proceed_to_payment"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
+
             </LinearLayout>
 
         </LinearLayout>
