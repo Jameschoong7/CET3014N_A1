@@ -4,16 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@drawable/background_gradient">
+    >
 
     <TextView
         android:id="@+id/customizeItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/customize_item_title"
-        android:textSize="24sp"
+
         android:textColor="#333333"
-        android:fontFamily="sans-serif-light"
+        style="@style/PageTitleTextStyle"
+
         android:layout_marginBottom="24dp"
         android:layout_gravity="center_horizontal"/>
 
@@ -80,7 +81,7 @@
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:textColor="#FFFFFF"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/rounded_button_small"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

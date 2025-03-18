@@ -13,7 +13,7 @@
     <string name="login_button_text">Login</string>
     <string name="register_button_short_text">Register</string>
     <string name="forgot_password_button_text">Forgot Password</string>
-    <string name="welcome_text">Welcome to the Coffee Shop!</string>
+    <string name="welcome_text">Welcome to Café Connect!</string>
     <string name="logout_button_text">Logout</string>
     <string name="logout_message">You have been logged out</string>
     <string name="back_to_login_button_text">Back to Login</string>
@@ -38,16 +38,17 @@
     <string name="delivery_address">Delivery Address</string>
     <string name="phone_number">Phone Number</string>
     <string name="save_details_for_future">Save details for future</string>
-    <string name="total_price">Total Price: $0.00</string>
-    <string name="tax">Tax (5%): $0.00</string>
+    <string name="total_price">Total Price: RM 0.00</string>
+    <string name="tax">Tax (6%): RM 0.00</string>
     <string name="voucher_code">Voucher Code</string>
     <string name="apply_voucher">Apply Voucher</string>
-    <string name="final_price">Final Price: $0.00</string>
+    <string name="final_price">Final Price: RM 0.00</string>
+    <string name="your_cart_is_empty">Your cart is empty</string>
 
     <string name="proceed_to_payment">Proceed to Payment</string>
     <string name="item_name">Item Name</string>
     <string name="item_details">Details: Milk, Sugar</string>
-    <string name="item_price">$2.99</string>
+    <string name="item_price">RM 2.99</string>
     <string name="customize_item_title">Customize Your Item</string>
     <string name="milk_type">Milk Type:</string>
     <string name="sugar_level">Sugar Level:</string>
@@ -63,7 +64,7 @@
     <string name="action_track_order">Track Order</string>
     <string name="action_accounts">Accounts</string>
     <string name="action_about">About</string>
-
+    <string name="view_receipt">View Receipt</string>
 
     <string name="track_order_title">Track Your Order</string>
     <string name="no_order_text">No order placed yet.</string>
@@ -77,4 +78,14 @@
     <string name="user_name_placeholder">Name: [User Name]</string>
     <string name="user_email_placeholder">Email: [user@email.com]</string>
     <string name="view_vouchers">View Vouchers</string>
+
+
+    <string name="order_receipt">Order Receipt</string>
+    <string name="receipt_details">Receipt Details</string>
+    <string name="ordered_items">Ordered Items</string>
+    <string name="order_id">Order ID:</string>
+    <string name="payment_method">Payment Method:</string>
+    <string name="total_paid">Total Paid:</string>
+    <string name="payment_time">Payment Time:</string>
+
 </resources>

@@ -6,16 +6,13 @@
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#8BC34A</color>
 
-    <color name="background_start_color">#E0F7FA</color>
-    <color name="background_end_color">#F0F4C3</color>
-    <color name="background_color">#F8F8F8</color>
-    <color name="text_primary">#333333</color>
-    <color name="text_secondary">#777777</color>
-    <color name="bottom_navigation_icon_color">#777777</color> <color name="bottom_navigation_text_color">#555555</color> <color name="bottom_navigation_item_selector">
+    <color name="background_color">#E6DFDF</color> <color name="background_start_color">#BFB4B4</color> <color name="background_end_color">#B4A2A2</color>
+
+    <color name="text_primary">#212121</color> <color name="text_secondary">#757575</color> <color name="bottom_navigation_icon_color">#757575</color>
+    <color name="bottom_navigation_text_color">#546E7A</color> <color name="bottom_navigation_item_selector">
     <selector>
-        <item android:color="@color/colorPrimary" android:state_checked="true"/> <item android:color="@color/bottom_navigation_icon_color"/>
+        <item android:color="@color/colorPrimary" android:state_checked="true"/>
+        <item android:color="@color/bottom_navigation_icon_color"/>
     </selector>
 </color>
-    <color name="titleTextColor">#222222</color>
-
-</resources>
+    <color name="titleTextColor">#2C3E50</color> </resources>

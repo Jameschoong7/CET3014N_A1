@@ -9,9 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/registration_title"
-        android:textSize="24sp"
-        android:textColor="#333333"
+
+
         android:gravity="center"
+        style="@style/PageTitleTextStyle"
         android:layout_marginBottom="24dp"/>
 
     <EditText

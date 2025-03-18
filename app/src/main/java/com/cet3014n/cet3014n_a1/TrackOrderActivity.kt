@@ -1,5 +1,6 @@
 package com.cet3014n.cet3014n_a1
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ class TrackOrderActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var sharedPreferences: SharedPreferences // Add SharedPreferences
     private lateinit var finishOrderButton: Button
+    private lateinit var viewReceiptButton: Button // Added
     private val ORDER_PREFS_NAME = "OrderPrefs" // Define a separate prefs name for order tracking
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,7 @@ class TrackOrderActivity : AppCompatActivity() {
         noOrderTextView = findViewById(R.id.noOrderTextView)
         orderStatusTextView = findViewById(R.id.orderStatusTextView)
         finishOrderButton = findViewById(R.id.finishOrderButton)
+        viewReceiptButton = findViewById(R.id.viewReceiptButton) // Initialize
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         sharedPreferences = getSharedPreferences(ORDER_PREFS_NAME, MODE_PRIVATE)
 
@@ -46,12 +49,20 @@ class TrackOrderActivity : AppCompatActivity() {
 
             orderIdTextView.text = "Order ID: $savedOrderId"
             orderStatusTextView.text = "Status: $savedOrderStatus"
+            viewReceiptButton.visibility = View.VISIBLE // Show the receipt button if there's an order
+
+            viewReceiptButton.setOnClickListener {
+                val intent = Intent(this, ReceiptActivity::class.java)
+                intent.putExtra("orderId", savedOrderId)
+                startActivity(intent)
+            }
 
         } else {
             // No order ID in SharedPreferences or Intent, display "No Order Placed"
             orderIdTextView.visibility = View.GONE
             orderStatusTextView.visibility = View.GONE
             noOrderTextView.visibility = View.VISIBLE
+            viewReceiptButton.visibility = View.GONE // Hide the receipt button if no order
         }
 
 
@@ -66,6 +77,7 @@ class TrackOrderActivity : AppCompatActivity() {
                     clearOrderDataAndShowNoOrderMessage()
                     // **Update Finish Button State initially**
                     updateFinishButtonState() // Call it here in onCreate
+                    viewReceiptButton.visibility = View.GONE // Hide receipt button after finishing order
                 }
                 .setNegativeButton("Cancel") { dialog, which ->
                     // User cancelled, just dismiss the dialog
@@ -74,6 +86,7 @@ class TrackOrderActivity : AppCompatActivity() {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
         }
+        updateFinishButtonState() // Call it here in onCreate
     }
     private fun updateFinishButtonState() {
         val savedOrderId = sharedPreferences.getString("orderId", null)
@@ -81,10 +94,12 @@ class TrackOrderActivity : AppCompatActivity() {
             // Order ID exists, enable and make button visible
             finishOrderButton.isEnabled = true
             finishOrderButton.alpha = 1.0f // Fully visible
+            viewReceiptButton.visibility = View.VISIBLE
         } else {
             // No order ID, disable and grey out button
             finishOrderButton.isEnabled = false
             finishOrderButton.alpha = 0.5f // Greyed out (adjust alpha as needed)
+            viewReceiptButton.visibility = View.GONE
         }
     }
     private fun clearOrderDataAndShowNoOrderMessage() {
@@ -92,11 +107,16 @@ class TrackOrderActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.remove("orderId")
         editor.remove("orderStatus")
+        editor.remove("paymentMethod") // Also clear payment method
+        editor.remove("finalAmount")   // Also clear final amount
+        editor.remove("orderItems")    // Also clear order items
+        editor.remove("paymentTime")    // Also clear payment time
         editor.apply()
 
         // Update UI to show "No order placed" message
         orderIdTextView.visibility = View.GONE
         orderStatusTextView.visibility = View.GONE
         noOrderTextView.visibility = View.VISIBLE
+        viewReceiptButton.visibility = View.GONE
     }
 }

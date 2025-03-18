@@ -9,5 +9,5 @@ data class CartItem(
     val menuItem: MenuItem,
     val milkOption: String,
     val sugarLevel: String
-    // Add other customizations as needed
+
 ) : Parcelable

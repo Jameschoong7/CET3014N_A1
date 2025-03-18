@@ -36,7 +36,7 @@ class MenuRecyclerAdapter(
 
         holder.itemName.text = menuItem.name
         holder.itemDescription.text = menuItem.description
-        holder.itemPrice.text = "$${String.format("%.2f", menuItem.price)}"
+        holder.itemPrice.text = "RM ${String.format("%.2f", menuItem.price)}"
 
         val imageName = menuItem.image // Get image name from menu item
         Log.d("ImageLoadingAdapter", "Binding image for item: ${menuItem.name}, imageName: $imageName") // Log item name and imageName
